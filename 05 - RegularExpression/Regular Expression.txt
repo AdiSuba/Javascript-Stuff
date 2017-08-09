@@ -1,0 +1,209 @@
+Regular Expressions
+
+search pattern
+-looks for a word, phrase or something specific from a text
+-a word by itself is a regular expression
+
+meta-characters in javascript:
+
+  single characters:
+    \d - any digit (0 - 9)
+    \w - any word character (letter or number) (A - Z or a - z or 0 - 9)
+    \W - anything that is not a word
+    \s - whitespace
+    \S - not whitespace
+    .  - any character whatsoever
+    \x - non standard character (Example: \.)
+
+  quantifiers:
+    *   -   0 or more
+    +   -   1 or more
+    ?   -   0 or 1
+    {min, max}
+    {n} - n in a row
+
+  position:
+    ^   -   beginning (shift + 6)
+    $   -   end (shift + 4)
+    \b  -   word boundary
+
+  character class:
+    [xyz] -   x or y or z
+    [a-z] -   characters a-z
+    [^x]  -   anything except x (must be in beginning)
+
+  alternation
+    (x|y) -   x or y
+
+Greedy modifier
+    Example:
+    \[.*\]   -    will find anything within [] even other [] brackets
+    Adding a ? after the modifier makes it not greedy
+    \[.*?\]   -    will stop after first ] bracket
+
+Grouping regular expressions:
+  () - when using without | assigns elements within to a group
+  the entire regular expression is marked as group 0
+  the first () is marked as group 1 and all the others go in the ascending order
+  groups can be referred to by $x or \x where x is a number
+    $x is used when replacing elements found by the initial expression
+    \x is used within the expression itself
+
+Flags
+  Written after the regular expression itself that is after closing the / bracket.
+  g   -   global - gives all substrings that match the regular expression
+  i   -   case insensitive - ignores case
+
+  Example:
+    var r = /\b[a-z]-\b/gi   -   also finds the words that contain uppercase letters
+
+Regular expression in javascript
+
+  var s = "hello"   -   string
+  var r = /hello/   -   regular expression
+
+  new String("xxx") -   string constructor
+  new RegExp("xxx") -   regular expression constructor
+
+Functions concerning regular expressions
+
+  r.test(string)    -   gives true if the string matches the regular expression
+                    -   the entire string does not need to match the regular expression
+                    -   if only one part does the function returns true
+  s.match(regexp)   -   gives the first part of the string that matches the regular expression
+  s.split(regex)    -   splits strings into several substrings by a regular expression
+                    -   excludes substring found by regular expression
+                    -   parts grouped within the regular expression will also be added in a substring
+  s.replace(regex, string or function)
+                    -   replaces the substring found by the regex with a string
+                    -   if the second argument is a function it receives the substring found by regex
+                    -   replaces the previously mentioned substring with whatever the function returns
+
+Example 1: Phone number
+
+456-564-1123
+\d\d\d-\d\d\d-\d\d\d\d
+\d{3}-\d{3}-\d{4}
+
+Example 2: 5 letter word
+
+phone
+\W\w{5}\W
+- doesn't find the first word in the file if it has 5 characters
+\b\w{5}\b - better way
+\b[A-Za-z]{5}\b
+
+Example 3:
+
+color or colour or colors
+colou?rs?
+
+Example 3: Words on the beginning or end of a line
+
+Tis a text
+example of
+such an
+phenomenon
+^\w+
+\w+$
+^\w+$ - single word
+
+Example 5: Websites
+
+bla.com
+random.net
+whaaaaaaa.org
+.[cno][oer][mtg]\b
+\w+\.(com|net|org)
+
+Example 6: Phone numbers
+
+061-153456
+061-561-515
+(061)451-561
+061 169-123
+061.123.154
+061565412
+061 231 564
+38761 456-112
++38761 123-456
+38761 132 545
+
+\+?3?8?\(?\d{3}[-). ]?\d{3}[-. ]?\d{3}
+
+Example 6: E-mail
+
+rand.jka@gmail.com
+haun_uifaf@hotmail.net
+arijkgds@yahoo.org
+
+[\w.]+@\w+\.(com|net|org)
+
+Example 7:
+
+061-156-256
+\d{3}-(\d{3})-(d{3})
+
+Example 8: Grouping and reformatting phone numbers
+
+062-561-515
+(063)451-561
+065 169-123
+38733 456-112
++38735 123-456
+
+\+?3?8?\(?\d(\d{2})[-). ]?(\d{3})[-. ]?(\d{3})
+Replace with:
+$1-$2-$3
+
+062-561-515
+063-451-561
+065-169-123
+033-456-112
+035-123-456
+
+Example 9: Names
+
+Subasic, Adi
+Nafai, Jimmy
+Ajda, Area
+Random, Number
+
+(\w+), (\w+)
+Replace with:
+$2 $1
+
+Adi Subasic
+Jimmy Nafai
+Area Ajda
+Number Random
+
+Example 10: Links
+
+[Google](http://google.com);[test]
+[Youtube](http://youtube.com);
+[Link](http://link.com)
+
+\[(.*?)\]\((http.*?\))
+Replace with:
+<a href = "$2">$1</a>
+
+<a href = "http://google.com">Google</a>;[test]
+<a href = "http://youtube.com">Youtube</a>;
+<a href = "http://link.com">Link</a>
+
+Example 11: Double words
+
+This is something something about about,
+using two two, words one. one
+after after each other other other
+so we should should fix, fix fix fix fix that that that
+
+\s(\w+)\s\1
+Replace with:
+ $1
+
+This is something  about ,
+using two , words one. one
+ after  each other ; other
+so we should  fix : fix  fix that  that

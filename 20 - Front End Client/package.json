@@ -1,0 +1,15 @@
+{
+  "name": "API demo",
+  "version": "1.0.0",
+  "description": "Building an API",
+  "main": "server.js",
+  "scripts": {},
+  "keywords": [
+    "random"
+  ],
+  "author": "Me",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
